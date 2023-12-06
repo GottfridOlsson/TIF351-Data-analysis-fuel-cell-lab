@@ -1,6 +1,6 @@
 ##======================================================================##
 ##     Project: [TIF351] FUEL CELL LAB - DATA ANALYSIS
-##        File: CV plotting.py
+##        File: Polarization curve plotting.py
 ##      Author: GOTTFRID OLSSON 
 ##     Created: 2023-12-06
 ##     Updated: 2023-12-06
@@ -21,8 +21,8 @@ import matplotlib.ticker as plticker
 
 # READ CSV #
 # Change these:
-filename_csv = 'TIF351_Fuel-cell-laboration_CV-curve-data.csv' 
-filename_pdf = 'TIF351_Fuel-cell-laboration_CV-curves.pdf'
+filename_csv = 'TIF351_Fuel-cell-laboration_polarization-curve-data.csv' 
+filename_pdf = 'TIF351_Fuel-cell-laboration_polarization-curves.pdf'
 
 CURRENT_PATH = os.path.abspath(os.path.dirname(__file__))
 CSV_path = CURRENT_PATH + "\\" + filename_csv # "\\CSV\\" +
@@ -42,13 +42,13 @@ y_data_aged = CSV_data[CSV_header[3]]
 
 # DATA ANLYSIS / CALCULATIONS #
 A = 5 # cm^2
-y_data_fresh = y_data_fresh / A #convert from current to current density
-y_data_aged = y_data_aged / A
+x_data_fresh = -x_data_fresh / A #convert from current to current density and flip sign
+x_data_aged = -x_data_aged / A
 
 
 # PLOT SETTINGS #
-x_lim = [-0.0001, 1.05] #[np.min(x_data_aged), np.max(x_data_aged)]
-y_lim = [-40, 40] #[np.min(y_data_aged), np.max(y_data_aged)]
+x_lim = [-25, 900] #[np.min(x_data_aged), np.max(x_data_aged)]
+y_lim = [0.45, 1.05] #[np.min(y_data_aged), np.max(y_data_aged)]
 
 f.set_LaTeX_and_CMU(True) #must be before plotting
 fig, axs = plt.subplots(nrows=1, ncols=1, figsize=(16/2.54, 9/2.54), sharex=False, sharey=False)
@@ -62,7 +62,7 @@ axs.plot(x_data_aged,  y_data_aged,  linewidth=1.5, linestyle='', color='r', mar
 # Settings for each axis
 f.set_font_size(axis=13, tick=11, legend=9)
 f.set_axis_scale(   axs, xScale_string='linear', yScale_string='linear')
-f.set_axis_labels(  axs, x_label="Potential / $\mathrm{V}_{\mathrm{RHE}}$", y_label="Current density / $\\rm mA\,cm^{-2}$")
+f.set_axis_labels(  axs, x_label="Current density / $\\rm mA\,cm^{-2}$", y_label="Potential / $\mathrm{V}_{\mathrm{RHE}}$")
 f.set_axis_invert(  axs, x_invert=False, y_invert=False)
 f.set_axis_limits(  axs, x_lim[0], x_lim[1], y_lim[0], y_lim[1])
 f.set_grid(         axs, grid_major_on=True, grid_major_linewidth=0.7, grid_minor_on=False, grid_minor_linewidth=0.3) # set_grid must be after set_axis_scale for some reason (at least with 'log')
